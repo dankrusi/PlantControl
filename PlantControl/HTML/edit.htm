@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+  	<link rel="stylesheet" href="/css/jquery-ui.min.css">
+  	<link rel="stylesheet" href="/css/jquery-ui.structure.min.css">
+  	<link rel="stylesheet" href="/css/jquery-ui.theme.min.css">
+    <link rel="stylesheet" href="/css/app.css">
+    <script src="/scripts/jquery-3.1.1.min.js"></script>
+    <script src="/scripts/jquery-ui.min.js"></script>
+    <script src="/scripts/app.js"></script>
+    <script>
+    	$(document).ready(function(){
+    		$("#login").click(function(){
+
+				PlantControl.apiCall(
+					"api/account/login",
+					{
+						username: $("#username").val(),
+						password: $("#password").val()
+					},
+					function(success) {
+						// Register token
+						PlantControl.createCookie("AuthToken",success.Hash,30);
+						// Redirect
+						window.location = "/";
+					}
+				);
+
+    		});
+
+    	});
+    </script>
+</head>
+<body>
+    <h1>Login</h1>
+    <p>
+    	<input id="username" placeholder="Username"/>
+    </p>
+    <p>
+    	<input id="password" type="password" placeholder="Password"/>
+    </p>
+    <p>
+    	<input id="login" value="Login" type="button"/>
+    </p>
+</body>
+</html>
