@@ -41,8 +41,12 @@ namespace PlantControl.API
 				obj = this.DB.Plants.Select("RowId = @Id",new{Id = id}).SingleOrDefault();
 			} else if(type == "user") {
 				obj = this.DB.Users.Select("RowId = @Id",new{Id = id}).SingleOrDefault();
-			} else if(type == "datapoint") {
-				obj = this.DB.DataPoints.Select("RowId = @Id",new{Id = id}).SingleOrDefault();
+			} else if (type == "datapoint") {
+				obj = this.DB.DataPoints.Select("RowId = @Id", new { Id = id }).SingleOrDefault();
+			} else if (type == "setting") {
+				obj = this.DB.Settings.Select("RowId = @Id", new { Id = id }).SingleOrDefault();
+			} else if (type == "authtoken") {
+				obj = this.DB.AuthTokens.Select("RowId = @Id", new { Id = id }).SingleOrDefault();
 			}
 			if(obj == null) throw new Exception("Object could not be found");
 
@@ -52,6 +56,8 @@ namespace PlantControl.API
 		[WebApiHandler(HttpVerbs.Get, "/api/edit/properties")]
 		public bool GetProperties(WebServer server, HttpListenerContext context)
 		{
+			this.Authenticate(server, context);
+
 			try
 			{
 				// Init
@@ -98,6 +104,8 @@ namespace PlantControl.API
 		[WebApiHandler(HttpVerbs.Get, "/api/edit/save")]
 		public bool GetSave(WebServer server, HttpListenerContext context)
 		{
+			this.Authenticate(server, context);
+
 			try
 			{
 				// Init

@@ -13,7 +13,6 @@ using System.Net;
 using System.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using System.Security.Cryptography;
 
 using Unosquare.Labs.LiteLib;
 
@@ -40,10 +39,13 @@ namespace PlantControl.Model
 		}
 
 		public string GetPasswordHash(string password) {
-			string hashstring = this.Username + password + "389uas!@ydf89ua&#q29i34y9yr3ai&*(^&uwy49tu";
-			byte[] hashstringBytes = new UTF8Encoding().GetBytes(hashstring);
-			byte[] hashBytes = ((HashAlgorithm) CryptoConfig.CreateFromName("MD5")).ComputeHash(hashstringBytes);
-			return BitConverter.ToString(hashBytes).Replace("-", string.Empty).ToLower();
+			string salt1 = Config.GetRequiredDBStringValue("UserSalt1");
+			string salt2 = Config.GetRequiredDBStringValue("UserSalt2");
+			string salt3 = Config.GetRequiredDBStringValue("UserSalt3");
+			string hashstring1 = Util.Hash.GetHashedString(password + salt1);
+			string hashstring2 = Util.Hash.GetHashedString(hashstring1 + salt2);
+			string hashstring3 = Util.Hash.GetHashedString(hashstring2 + salt3);
+			return hashstring3;
 		}
 
 		public void SetPassword(string password) {

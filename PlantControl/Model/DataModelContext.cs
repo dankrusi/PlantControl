@@ -17,7 +17,7 @@ namespace PlantControl.Model
 	{
 		public DataModelContext()
 			: base(
-				System.AppDomain.CurrentDomain.BaseDirectory + "/" + "DB" + "/" + "PlantControl.db", 
+				Config.GetPathValue("DBPath"), 
 				new ConsoleLog())
 		{
 			// map this context to the database file mydbfile.db and don't use any logging capabilities.
@@ -29,6 +29,7 @@ namespace PlantControl.Model
             // map this context to the database file mydbfile.db and don't use any logging capabilities.
         }
 
+		public LiteDbSet<Setting> Settings { get; set; }
 		public LiteDbSet<User> Users { get; set; }
 		public LiteDbSet<Plant> Plants { get; set; }
 		public LiteDbSet<AuthToken> AuthTokens { get; set; }
@@ -38,7 +39,12 @@ namespace PlantControl.Model
 			using(DataModelContext db = new DataModelContext()) {
 				// No users?
 				if(db.Users.Count() == 0) {
-					db.Users.Insert(User.CreateUser("admin","admin")); //TODO
+					// Create salts
+					Config.SetDBStringValue("UserSalt1", System.Guid.NewGuid().ToString());
+					Config.SetDBStringValue("UserSalt2", System.Guid.NewGuid().ToString());
+					Config.SetDBStringValue("UserSalt3", System.Guid.NewGuid().ToString());
+					// Insert admin user
+					db.Users.Insert(User.CreateUser(Config.GetRequiredStringValue("UserAdminUsername"),Config.GetRequiredStringValue("UserAdminDefaultPassword")));
 				}
 			}
 		}

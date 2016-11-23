@@ -26,6 +26,10 @@ namespace PlantControl
 			string serverURL = Config.GetStringValue("WebServerURL");
 			string htmlDir = Config.GetPathValue("WebServerHTMLPath");
 
+			// Reset DB?
+			if(Config.GetBoolValue("DBResetOnRun")) {
+				System.IO.File.Delete(Config.GetPathValue("DBPath"));
+			}
 			// https://github.com/unosquare/litelib
 			var dbContext = new Model.DataModelContext();
 			dbContext.Init();

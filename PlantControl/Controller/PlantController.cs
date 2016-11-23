@@ -81,7 +81,7 @@ namespace PlantControl.Controller
 					}
 
 					if(true) {
-						_interface.SetPinMode(0,PlantControl.HAL.PinMode.OUTPUT);
+						_interface.SetPinMode(0,PlantControl.HAL.PinMode.INPUT);
 						var ret = _interface.AnalogRead(0);
 						_log.DebugFormat("Controller: analogread = "+ret);
 						_interface.AnalogWrite(0,42);

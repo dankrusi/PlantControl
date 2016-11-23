@@ -62,6 +62,8 @@
     <Compile Include="HAL\MicrocontrollerInterface.cs" />
     <Compile Include="HAL\SimulatedArduinoInterface.cs" />
     <Compile Include="Config\Config.cs" />
+    <Compile Include="Util\Hash.cs" />
+    <Compile Include="Model\Setting.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -112,5 +114,6 @@
     <Folder Include="HAL\" />
     <Folder Include="Controller\" />
     <Folder Include="Config\" />
+    <Folder Include="Util\" />
   </ItemGroup>
 </Project>
