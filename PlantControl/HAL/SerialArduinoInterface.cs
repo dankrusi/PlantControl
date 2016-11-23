@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace PlantControl.HAL
 {
-	public class ArduinoSerialInterface
+	public class SerialArduinoInterface : IMicrocontrollerInterface
 	{
 		
 		private SerialPort _serialPort;
@@ -22,24 +22,13 @@ namespace PlantControl.HAL
 		private string _port;
 		private int _baudRate;
 
-		public enum PinMode {
-			INPUT,
-			OUTPUT,
-			PULLUP
-		}
-
-		public enum PinValue {
-			HIGH,
-			LOW
-		}
-
-		public ArduinoSerialInterface(string port, int baudRate = 9600) {
+		public SerialArduinoInterface(string port, int baudRate = 9600) {
 			_log = new ConsoleLog();
 			_port = port;
 			_baudRate = baudRate;
 		}
 
-		public void Open() {
+		public void Start() {
 
 			_serialPort = new SerialPort();
 
@@ -72,7 +61,7 @@ namespace PlantControl.HAL
 			_serialPort.Open();
 		}
 
-		public void Close() {
+		public void Stop() {
 			_serialPort.Close();
 		}
 

@@ -22,11 +22,9 @@ namespace PlantControl
 	class MainClass
 	{
 		public static void Main(string[] args) {
-			var url = "http://localhost:9696/";
-			if (args.Length > 0) url = args[0];
-
-			//string htmlDir = System.AppDomain.CurrentDomain.BaseDirectory + "/" + "HTML";
-			string htmlDir = "/media/dankrusi/Data/Code/PlantControl/PlantControl/HTML";
+			
+			string serverURL = Config.GetStringValue("WebServerURL");
+			string htmlDir = Config.GetPathValue("WebServerHTMLPath");
 
 			// https://github.com/unosquare/litelib
 			var dbContext = new Model.DataModelContext();
@@ -42,7 +40,7 @@ namespace PlantControl
 			// there are alternate constructors that allow you to skip specifying an ILog object.
 			// https://github.com/unosquare/embedio
 			//using (var server = new WebServer(url))
-			using (var server = new WebServer(url, new ConsoleLog(), RoutingStrategy.Regex))
+			using (var server = new WebServer(serverURL, new ConsoleLog(), RoutingStrategy.Regex))
 			{
 				// First, we will configure our web server by adding Modules.
 				// Please note that order DOES matter.
@@ -62,7 +60,7 @@ namespace PlantControl
 				// Here we setup serving of static files
 				server.RegisterModule(new StaticFilesModule(htmlDir));
 				// The static files module will cache small files in ram until it detects they have been modified.
-				server.Module<StaticFilesModule>().UseRamCache = false;
+				server.Module<StaticFilesModule>().UseRamCache = Config.GetBoolValue("WebServerUseRamCache");
 				server.Module<StaticFilesModule>().DefaultExtension = ".htm";
 				// We don't need to add the line below. The default document is always index.html.
 				server.Module<StaticFilesModule>().DefaultDocument = "index.htm";
