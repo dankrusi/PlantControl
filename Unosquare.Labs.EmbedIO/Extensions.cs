@@ -339,7 +339,7 @@
         /// </summary>
         /// <param name="requestBody">The request body.</param>
         /// <returns></returns>
-        public static Dictionary<string, object> RequestFormDataDictionary(this string requestBody)
+		public static Dictionary<string, object> RequestFormDataDictionary(this string requestBody)
         {
             return ParseFormDataAsDictionary(requestBody);
         }

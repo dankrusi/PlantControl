@@ -1,13 +1,22 @@
 ﻿<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" >
 <head>
+  	<link rel="stylesheet" href="/css/jquery-ui.min.css">
+  	<link rel="stylesheet" href="/css/jquery-ui.structure.min.css">
+  	<link rel="stylesheet" href="/css/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="/css/app.css">
+    <script src="/scripts/jquery-3.1.1.min.js"></script>
+    <script src="/scripts/jquery-ui.min.js"></script>
     <script src="/scripts/app.js"></script>
 </head>
 <body>
-    <div class="container"></div>
-    <div class="container">
-    asdfasdfasdf
-    </div>
+    <div class="header"></div>
+	<div class="content">
+		<h1>Control Panel</h1>
+		<div class="plants" app-data="api/plants">
+	    	<p>plant {rowid} {title} {species} <a href="/edit?type=plant&amp;id={rowid}">edit</a></p>
+	    </div>
+	</div>
+	<div class="footer"></div>
 </body>
 </html>

@@ -25,10 +25,10 @@
 
             ThreadPool.QueueUserWorkItem(context =>
             {
-                var current = Console.ForegroundColor;
-                Console.ForegroundColor = color;
+                //var current = Console.ForegroundColor;
+				//Console.ForegroundColor = color;
                 Console.WriteLine(format, args);
-                Console.ForegroundColor = current;
+                //Console.ForegroundColor = current;
             });
         }
 

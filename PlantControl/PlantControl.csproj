@@ -17,8 +17,9 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -31,10 +32,79 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="CommandLine">
+      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Logging\ConsoleLog.cs" />
+    <Compile Include="Model\DataPoint.cs" />
+    <Compile Include="Model\Plant.cs" />
+    <Compile Include="Model\DataModelContext.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="API\PlantController.cs" />
+    <Compile Include="API\Controller.cs" />
+    <Compile Include="Model\AuthToken.cs" />
+    <Compile Include="API\AccountController.cs" />
+    <Compile Include="Model\Entity.cs" />
+    <Compile Include="API\EditController.cs" />
+    <Compile Include="Controller\PlantController.cs" />
+    <Compile Include="HAL\ArduinoSerialInterface.cs" />
+    <Compile Include="Model\Sensor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Unosquare.Labs.EmbedIO\Unosquare.Labs.EmbedIO.csproj">
+      <Project>{7D7C29B4-9493-4EBD-8F20-6FAC1E7161EE}</Project>
+      <Name>Unosquare.Labs.EmbedIO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Unosquare.Labs.LiteLib\Unosquare.Labs.LiteLib.csproj">
+      <Project>{61110638-2D09-4B02-A543-AE32D182C0CE}</Project>
+      <Name>Unosquare.Labs.LiteLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="HTML\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HTML\scripts\app.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HTML\index.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HTML\css\app.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\DB.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HTML\scripts\jquery-3.1.1.min.js" />
+    <None Include="HTML\css\jquery-ui.css" />
+    <None Include="HTML\css\jquery-ui.min.css" />
+    <None Include="HTML\css\jquery-ui.structure.css" />
+    <None Include="HTML\css\jquery-ui.structure.min.css" />
+    <None Include="HTML\css\jquery-ui.theme.css" />
+    <None Include="HTML\css\jquery-ui.theme.min.css" />
+    <None Include="HTML\scripts\jquery-ui.js" />
+    <None Include="HTML\scripts\jquery-ui.min.js" />
+    <None Include="HTML\login.htm" />
+    <None Include="HTML\edit.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="Logging\" />
+    <Folder Include="API\" />
+    <Folder Include="DB\" />
+    <Folder Include="HAL\" />
+    <Folder Include="Controller\" />
+  </ItemGroup>
 </Project>

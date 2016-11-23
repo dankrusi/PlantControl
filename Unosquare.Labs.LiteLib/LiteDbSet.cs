@@ -318,9 +318,10 @@
         private void LogSqlCommand(string command, object arguments)
         {
             if (Debugger.IsAttached == false) return;
-            if (Context?.Logger == null) return;
+            if (Context.Logger == null) return;
 
-            //var task = Task.Factory.StartNew(() => {
+
+
             var argumentsText = new StringBuilder();
 
             if (arguments != null)
@@ -340,15 +341,15 @@
                     catch
                     {
                         // ignored
-                    }
-                    argumentsText.AppendLine($"    \"{prop.Name}\": \"{propValue ?? ""}\"");
+					}
+					argumentsText.AppendLine("    \""+prop.Name+"\": \""+propValue + "\"");
                 }
 
                 argumentsText.AppendLine("  }");
             }
 
-            Context.Logger.DebugFormat($"> {command}{argumentsText}");
-            //});
+			Context.Logger.DebugFormat("> "+command + argumentsText);
+         
         }
 
         /// <summary>

@@ -8,11 +8,45 @@
     <script src="/scripts/jquery-3.1.1.min.js"></script>
     <script src="/scripts/jquery-ui.min.js"></script>
     <script src="/scripts/app.js"></script>
+    <script>
+    	$(document).ready(function(){
+    		$("#login").click(function(){
+
+				PlantControl.apiCall(
+					"api/account/login",
+					{
+						username: $("#username").val(),
+						password: $("#password").val()
+					},
+					function(success) {
+						// Register token
+						PlantControl.createCookie("AuthToken",success.Hash,30);
+						// Redirect
+						window.location = "/";
+					}
+				);
+
+    		});
+
+    	});
+    </script>
 </head>
 <body>
-    <div class="container"></div>
-    <div class="plants" app-data="api/plants">
-    	<p>plant</p>
-    </div>
+    
+    <div class="header"></div>
+	<div class="content">
+		<h1>Edit</h1>
+	    <h1>Login</h1>
+	    <p>
+	    	<input id="username" placeholder="Username"/>
+	    </p>
+	    <p>
+	    	<input id="password" type="password" placeholder="Password"/>
+	    </p>
+	    <p>
+	    	<input id="login" value="Login" type="button"/>
+	    </p>
+	</div>
+	<div class="footer"></div>
 </body>
 </html>
