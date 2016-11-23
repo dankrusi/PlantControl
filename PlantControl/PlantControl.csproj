@@ -40,6 +40,7 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -56,8 +57,11 @@
     <Compile Include="Model\Entity.cs" />
     <Compile Include="API\EditController.cs" />
     <Compile Include="Controller\PlantController.cs" />
-    <Compile Include="HAL\ArduinoSerialInterface.cs" />
+    <Compile Include="HAL\SerialArduinoInterface.cs" />
     <Compile Include="Model\Sensor.cs" />
+    <Compile Include="HAL\MicrocontrollerInterface.cs" />
+    <Compile Include="HAL\SimulatedArduinoInterface.cs" />
+    <Compile Include="Config\Config.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -98,6 +102,7 @@
     <None Include="HTML\scripts\jquery-ui.min.js" />
     <None Include="HTML\login.htm" />
     <None Include="HTML\edit.htm" />
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
@@ -106,5 +111,6 @@
     <Folder Include="DB\" />
     <Folder Include="HAL\" />
     <Folder Include="Controller\" />
+    <Folder Include="Config\" />
   </ItemGroup>
 </Project>

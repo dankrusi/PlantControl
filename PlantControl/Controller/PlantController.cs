@@ -19,19 +19,29 @@ namespace PlantControl.Controller
 		private Model.DataModelContext _db;
 		private Thread _thread;
 		private ConsoleLog _log;
-		private HAL.ArduinoSerialInterface _interface;
+		private HAL.IMicrocontrollerInterface _interface;
 		bool _continue;
 
 		public PlantController()
 		{
+			// Init log
 			_log = new ConsoleLog();
-			_interface = new PlantControl.HAL.ArduinoSerialInterface("/dev/ttyACM1");
+			// Init interface
+			if(Config.GetStringValue("MicrocontrollerInterfaceType") == "SerialArduinoInterface") {
+				_log.InfoFormat("Using SerialArduinoInterface");
+				_interface = new PlantControl.HAL.SerialArduinoInterface(Config.GetStringValue("SerialArduinoInterfacePort"),Config.GetIntValue("SerialArduinoInterfaceBaudRate"));
+			} else if (Config.GetStringValue("MicrocontrollerInterfaceType") == "SimulatedArduinoInterface") {
+				_log.InfoFormat("Using SimulatedArduinoInterface");
+				_interface = new PlantControl.HAL.SimulatedArduinoInterface();
+			} else {
+				throw new Exception("Unknown MicrocontrollerInterfaceType");
+			}
 		}
 
 		public void Start() {
 			_log.DebugFormat("Starting Controller...");
 			// Open interface
-			_interface.Open();
+			_interface.Start();
 			// Start controller thread
 			_thread = new Thread(_process);
 			_continue = true;
@@ -60,20 +70,21 @@ namespace PlantControl.Controller
 					}
 
 					if(false) {
-						_interface.SetPinMode(13,PlantControl.HAL.ArduinoSerialInterface.PinMode.OUTPUT);
+						_interface.SetPinMode(13,PlantControl.HAL.PinMode.OUTPUT);
 						toggle = !toggle;
 						if(toggle) {
-							_interface.DigitalWrite(13,PlantControl.HAL.ArduinoSerialInterface.PinValue.HIGH);
+							_interface.DigitalWrite(13,PlantControl.HAL.PinValue.HIGH);
 						} else {
-							_interface.DigitalWrite(13,PlantControl.HAL.ArduinoSerialInterface.PinValue.LOW);
+							_interface.DigitalWrite(13,PlantControl.HAL.PinValue.LOW);
 						}
 						_log.DebugFormat("Controller: digital read = "+_interface.DigitalRead(13));
 					}
 
 					if(true) {
-						_interface.SetPinMode(0,PlantControl.HAL.ArduinoSerialInterface.PinMode.INPUT);
+						_interface.SetPinMode(0,PlantControl.HAL.PinMode.OUTPUT);
 						var ret = _interface.AnalogRead(0);
 						_log.DebugFormat("Controller: analogread = "+ret);
+						_interface.AnalogWrite(0,42);
 					}
 
 					Thread.Sleep(1000);
