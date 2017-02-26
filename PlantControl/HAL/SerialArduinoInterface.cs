@@ -12,118 +12,79 @@ using System;
 using System.IO.Ports;
 using System.Threading;
 
+using ArduinoDriver;
+
 namespace PlantControl.HAL
 {
 	public class SerialArduinoInterface : IMicrocontrollerInterface
 	{
 		
-		private SerialPort _serialPort;
 		private ConsoleLog _log;
+		private string _device;
 		private string _port;
 		private int _baudRate;
+		private ArduinoDriver.ArduinoDriver _driver;
 
-		public SerialArduinoInterface(string port, int baudRate = 9600) {
+		public SerialArduinoInterface(string device, string port, int baudRate = 9600) {
 			_log = new ConsoleLog();
+			_device = device;
 			_port = port;
 			_baudRate = baudRate;
 		}
 
 		public void Start() {
 
-			_serialPort = new SerialPort();
+			// Get model
+			ArduinoUploader.Hardware.ArduinoModel model;
+			if (_device == "Mega2560") model = ArduinoUploader.Hardware.ArduinoModel.Mega2560;
+			else if (_device == "Micro") model = ArduinoUploader.Hardware.ArduinoModel.Micro;
+			else if (_device == "NanoR3") model = ArduinoUploader.Hardware.ArduinoModel.NanoR3;
+			else if (_device == "UnoR3") model = ArduinoUploader.Hardware.ArduinoModel.UnoR3;
+			else throw new Exception("Arduino model unknown");
 
-			// Get a default port if it was not specified
-			if(_port == null) {
-				foreach(string port in SerialPort.GetPortNames()) {
-					_port = port;
-					break;
-				}
-			}
-			if(_port == null) {
-				_log.WarnFormat("No Serial Port Found!");
-			} else {
-				_log.DebugFormat("Selecting Serial Port " + _port);
-			}
+			var libpath1 = Environment.GetEnvironmentVariable("DYLD_LIBRARY_PATH");
 
-			// Setup the serial port
-			_serialPort.PortName = _port;
-			_serialPort.BaudRate = _baudRate;
-			//_serialPort.Parity = SetPortParity(_serialPort.Parity);
-			//_serialPort.DataBits = SetPortDataBits(_serialPort.DataBits);
-			//_serialPort.StopBits = SetPortStopBits(_serialPort.StopBits);
-			//_serialPort.Handshake = SetPortHandshake(_serialPort.Handshake);
+			var libpath2 = Environment.GetEnvironmentVariable("DYLD_FALLBACK_LIBRARY_PATH");
 
-			// Set the read/write timeouts
-			_serialPort.ReadTimeout = 1500;
-			_serialPort.WriteTimeout = 1500;
+			var libpath3 = Environment.GetEnvironmentVariable("LD_LIBRARY_PATH");
 
-			// Open it up
-			_serialPort.Open();
+			// Init driver
+			_driver = new ArduinoDriver.ArduinoDriver(model, _port, false);
+			//_driver = new ArduinoDriver.ArduinoDriver(model, false);
+
 		}
 
 		public void Stop() {
-			_serialPort.Close();
-		}
-
-		private string _sendCommand(string command) {
-			_log.DebugFormat("Serial Write: " + command);
-			_serialPort.WriteLine(command);
-			string ret = null;
-			try {
-				ret = _serialRead();
-			} catch(TimeoutException ex) {
-				_log.DebugFormat("Serial Timeout");}
-			return ret;
-		}
-
-		private string _serialRead() {
-			bool didRead = false;
-			string ret = null;
-			while(didRead == false) {
-				ret = _serialPort.ReadLine();
-				if(ret != null && ret.StartsWith("debug")) {
-					_log.DebugFormat("Serial Debug: " + ret);
-				} else {
-					didRead = true;
-				}
-			}
-			_log.DebugFormat("Serial Read: " + ret);
-			return ret.Trim();
-		}
-
-		private void _processWriteCommand(string command) {
-			var ret = _sendCommand(command);
-			if(ret != "success") throw new Exception("Could not process write command "+command);
+			_driver.Dispose();
 		}
 
 		public int AnalogRead(int pin) {
-			var ret = _sendCommand("analogread " + pin);
-			if(ret == null) return -1;
-			return int.Parse(ret);
-		}
-
-		public void SetPinMode(int pin, PinMode mode) {
-			string modeString = null;
-			if(mode == PinMode.INPUT) modeString = "in";
-			else if(mode == PinMode.OUTPUT) modeString = "out";
-			else if(mode == PinMode.PULLUP) modeString = "pullup";
-			_processWriteCommand("pinmode " + pin + " " + modeString);
+			var ret = _driver.Send(new ArduinoDriver.SerialProtocol.AnalogReadRequest((byte)pin));
+			return ret.PinValue;
 		}
 
 		public void AnalogWrite(int pin, int value) {
-			_processWriteCommand("analogwrite " + pin + " " + value);
+			_driver.Send(new ArduinoDriver.SerialProtocol.AnalogWriteRequest((byte)pin, (byte)value));
 		}
 
 		public void DigitalWrite(int pin, PinValue value) {
-			_processWriteCommand("digitalwrite " + pin + " " + (value == PinValue.HIGH ? "high" : "low"));
+			DigitalValue digitalValue = value == 0 ? DigitalValue.Low : DigitalValue.High;
+			_driver.Send(new ArduinoDriver.SerialProtocol.DigitalWriteRequest((byte)pin, digitalValue));
 		}
 
 		public int DigitalRead(int pin) {
-			var ret = _sendCommand("digitalread " + pin);
-			if(ret == null) return -1;
-			return int.Parse(ret);
+			var ret = _driver.Send(new ArduinoDriver.SerialProtocol.DigitalReadRequest((byte)pin));
+			if (ret.PinValue == DigitalValue.High) return 1;
+			else return 0;
 		}
-
+			             
+		public void SetPinMode(int pin, PinMode mode) {
+			ArduinoDriver.SerialProtocol.PinMode mode2 = ArduinoDriver.SerialProtocol.PinMode.Input;
+			if (mode == PinMode.INPUT) mode2 = ArduinoDriver.SerialProtocol.PinMode.Input;
+			else if (mode == PinMode.OUTPUT) mode2 = ArduinoDriver.SerialProtocol.PinMode.Output;
+			else if (mode == PinMode.PULLUP) mode2 = ArduinoDriver.SerialProtocol.PinMode.InputPullup;
+			_driver.Send(new ArduinoDriver.SerialProtocol.PinModeRequest((byte)pin, mode2));
+		}
 
 	}
 }

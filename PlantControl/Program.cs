@@ -30,10 +30,14 @@ namespace PlantControl
 			if(Config.GetBoolValue("DBResetOnRun")) {
 				System.IO.File.Delete(Config.GetPathValue("DBPath"));
 			}
+
+			// Initial DB load
 			// https://github.com/unosquare/litelib
 			var dbContext = new Model.DataModelContext();
 			dbContext.Init();
+			if (Config.GetBoolValue("DBResetOnRun")) dbContext.CreateTestPlants();
 
+			// Init the controller
 			bool enableController = true;
 			if(enableController) {
 				var controller = new Controller.PlantController();

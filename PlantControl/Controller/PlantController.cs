@@ -29,7 +29,7 @@ namespace PlantControl.Controller
 			// Init interface
 			if(Config.GetStringValue("MicrocontrollerInterfaceType") == "SerialArduinoInterface") {
 				_log.InfoFormat("Using SerialArduinoInterface");
-				_interface = new PlantControl.HAL.SerialArduinoInterface(Config.GetStringValue("SerialArduinoInterfacePort"),Config.GetIntValue("SerialArduinoInterfaceBaudRate"));
+				_interface = new PlantControl.HAL.SerialArduinoInterface(Config.GetStringValue("SerialArduinoInterfaceDevice1"),Config.GetStringValue("SerialArduinoInterfacePort1"),Config.GetIntValue("SerialArduinoInterfaceBaudRate"));
 			} else if (Config.GetStringValue("MicrocontrollerInterfaceType") == "SimulatedArduinoInterface") {
 				_log.InfoFormat("Using SimulatedArduinoInterface");
 				_interface = new PlantControl.HAL.SimulatedArduinoInterface();
@@ -58,15 +58,27 @@ namespace PlantControl.Controller
 
 		public void _process(){
 			bool toggle = true;
+			int pump = 39;
+
+			// Init
+			for (int p = 39; p <= 54; p += 2) {
+				_interface.DigitalWrite(p, HAL.PinValue.LOW);
+				Thread.Sleep(500);
+				_interface.SetPinMode(p, PlantControl.HAL.PinMode.OUTPUT);
+				Thread.Sleep(500);
+			}
+
 			while (_continue) {
 				try {
 					//string message = _serialPort.ReadLine();
 					//Console.WriteLine(message);
 
 					if(false) {
-						var ret = _interface.AnalogRead(0);
+						int testPin = 14;
+						_interface.SetPinMode(testPin, HAL.PinMode.INPUT);
+						var ret = _interface.AnalogRead(testPin);
 						_log.DebugFormat("Controller: analogread = "+ret);
-						_interface.AnalogWrite(0,100);
+						//_interface.AnalogWrite(0,100);
 					}
 
 					if(false) {
@@ -80,13 +92,58 @@ namespace PlantControl.Controller
 						_log.DebugFormat("Controller: digital read = "+_interface.DigitalRead(13));
 					}
 
-					if(true) {
-						_interface.SetPinMode(0,PlantControl.HAL.PinMode.INPUT);
+					if (false) {
+						_interface.SetPinMode(0, PlantControl.HAL.PinMode.INPUT);
 						var ret = _interface.AnalogRead(0);
-						_log.DebugFormat("Controller: analogread = "+ret);
-						_interface.AnalogWrite(0,42);
+						_log.DebugFormat("Controller: analogread = " + ret);
+						_interface.AnalogWrite(0, 42);
 					}
 
+					if (false) {
+						//_interface.SetPinMode(36, PlantControl.HAL.PinMode.OUTPUT);
+						//_interface.DigitalWrite(36, HAL.PinValue.HIGH);
+						Thread.Sleep(10);
+						for (int p = 39; p <= 54; p += 2) {
+							_interface.DigitalWrite(p, HAL.PinValue.HIGH);
+							_interface.SetPinMode(p, PlantControl.HAL.PinMode.OUTPUT);
+						}
+						_interface.DigitalWrite(pump, HAL.PinValue.LOW);
+						_interface.SetPinMode(pump, PlantControl.HAL.PinMode.OUTPUT);
+						pump++;
+						if (pump > 53) pump = 39;
+						//var ret = _interface.AnalogRead(0);
+						//_log.DebugFormat("Controller: analogread = " + ret);
+						//_interface.AnalogWrite(0, 42);
+					}
+
+					if (true) {
+
+						for (int p = 39; p <= 54; p += 2) {
+							_interface.DigitalWrite(p, HAL.PinValue.LOW);
+							//_interface.SetPinMode(p, PlantControl.HAL.PinMode.OUTPUT);
+						}
+						Thread.Sleep(1000);
+						for (int p = 39; p <= 54; p += 2) {
+							_interface.DigitalWrite(p, HAL.PinValue.HIGH);
+							//_interface.SetPinMode(p, PlantControl.HAL.PinMode.OUTPUT);
+						}
+						Thread.Sleep(1000);
+
+					}
+
+					if (false) {
+						for (int p = 39; p <= 54; p += 2) {
+							_interface.DigitalWrite(p, HAL.PinValue.HIGH);
+							_interface.SetPinMode(p, PlantControl.HAL.PinMode.OUTPUT);
+						}
+						pump += 2;
+						if (pump < 39 || pump > 54) pump = 39;
+						_interface.DigitalWrite(pump, HAL.PinValue.LOW);
+						_interface.SetPinMode(pump, PlantControl.HAL.PinMode.OUTPUT);
+						Thread.Sleep(8000);
+					}
+
+					toggle = !toggle;
 					Thread.Sleep(1000);
 				} catch (Exception e) { 
 					_log.WarnFormat("!!!!!!!!!!!" + e.Message);

@@ -48,5 +48,10 @@ namespace PlantControl.Model
 				}
 			}
 		}
+
+		public void CreateTestPlants() {
+			Plant plant = new Plant();
+
+		}
     }
 }

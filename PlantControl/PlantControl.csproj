@@ -7,7 +7,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>PlantControl</RootNamespace>
     <AssemblyName>PlantControl</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,6 +41,21 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Configuration" />
+    <Reference Include="IntelHexFormatReader">
+      <HintPath>..\packages\IntelHexFormatReader.2.2.1\lib\net452\IntelHexFormatReader.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.4.3.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="RJCP.SerialPortStream">
+      <HintPath>..\packages\SerialPortStream.2.0.3\lib\net45\RJCP.SerialPortStream.dll</HintPath>
+    </Reference>
+    <Reference Include="ArduinoUploader">
+      <HintPath>..\packages\ArduinoUploader.2.3.0\lib\net452\ArduinoUploader.dll</HintPath>
+    </Reference>
+    <Reference Include="ArduinoDriver">
+      <HintPath>..\packages\ArduinoDriver.2.2.0\lib\net452\ArduinoDriver.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -115,5 +130,6 @@
     <Folder Include="Controller\" />
     <Folder Include="Config\" />
     <Folder Include="Util\" />
+    <Folder Include="Libs\" />
   </ItemGroup>
 </Project>
