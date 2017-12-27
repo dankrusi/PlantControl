@@ -35,21 +35,15 @@ namespace PlantControl.HAL
 		public void Start() {
 
 			// Get model
-			ArduinoUploader.Hardware.ArduinoModel model;
-			if (_device == "Mega2560") model = ArduinoUploader.Hardware.ArduinoModel.Mega2560;
-			else if (_device == "Micro") model = ArduinoUploader.Hardware.ArduinoModel.Micro;
-			else if (_device == "NanoR3") model = ArduinoUploader.Hardware.ArduinoModel.NanoR3;
-			else if (_device == "UnoR3") model = ArduinoUploader.Hardware.ArduinoModel.UnoR3;
+			ArduinoDriver.ArduinoModel model;
+			if (_device == "Mega2560") model = ArduinoDriver.ArduinoModel.Mega2560;
+			else if (_device == "Micro") model = ArduinoDriver.ArduinoModel.Micro;
+			else if (_device == "NanoR3") model = ArduinoDriver.ArduinoModel.NanoR3;
+			else if (_device == "UnoR3") model = ArduinoDriver.ArduinoModel.UnoR3;
 			else throw new Exception("Arduino model unknown");
 
-			var libpath1 = Environment.GetEnvironmentVariable("DYLD_LIBRARY_PATH");
-
-			var libpath2 = Environment.GetEnvironmentVariable("DYLD_FALLBACK_LIBRARY_PATH");
-
-			var libpath3 = Environment.GetEnvironmentVariable("LD_LIBRARY_PATH");
-
 			// Init driver
-			_driver = new ArduinoDriver.ArduinoDriver(model, _port, false);
+			_driver = new ArduinoDriver.ArduinoDriver(model, _port);
 			//_driver = new ArduinoDriver.ArduinoDriver(model, false);
 
 		}
@@ -69,6 +63,7 @@ namespace PlantControl.HAL
 
 		public void DigitalWrite(int pin, PinValue value) {
 			DigitalValue digitalValue = value == 0 ? DigitalValue.Low : DigitalValue.High;
+			_log.DebugFormat("DigitalWrite pin "+pin+"="+value.ToString());
 			_driver.Send(new ArduinoDriver.SerialProtocol.DigitalWriteRequest((byte)pin, digitalValue));
 		}
 

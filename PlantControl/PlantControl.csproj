@@ -41,20 +41,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Configuration" />
-    <Reference Include="IntelHexFormatReader">
-      <HintPath>..\packages\IntelHexFormatReader.2.2.1\lib\net452\IntelHexFormatReader.dll</HintPath>
-    </Reference>
     <Reference Include="NLog">
-      <HintPath>..\packages\NLog.4.3.0\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="RJCP.SerialPortStream">
-      <HintPath>..\packages\SerialPortStream.2.0.3\lib\net45\RJCP.SerialPortStream.dll</HintPath>
-    </Reference>
-    <Reference Include="ArduinoUploader">
-      <HintPath>..\packages\ArduinoUploader.2.3.0\lib\net452\ArduinoUploader.dll</HintPath>
-    </Reference>
-    <Reference Include="ArduinoDriver">
-      <HintPath>..\packages\ArduinoDriver.2.2.0\lib\net452\ArduinoDriver.dll</HintPath>
+      <HintPath>..\packages\NLog.4.4.3\lib\net45\NLog.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +77,10 @@
     <ProjectReference Include="..\Unosquare.Labs.LiteLib\Unosquare.Labs.LiteLib.csproj">
       <Project>{61110638-2D09-4B02-A543-AE32D182C0CE}</Project>
       <Name>Unosquare.Labs.LiteLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ArduinoDriver\Source\ArduinoDriver\ArduinoDriver.csproj">
+      <Project>{1FE32CD3-938F-40A7-B0A5-75CF0A7254D7}</Project>
+      <Name>ArduinoDriver</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +122,5 @@
     <Folder Include="Controller\" />
     <Folder Include="Config\" />
     <Folder Include="Util\" />
-    <Folder Include="Libs\" />
   </ItemGroup>
 </Project>

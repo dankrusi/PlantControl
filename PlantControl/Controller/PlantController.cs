@@ -59,13 +59,15 @@ namespace PlantControl.Controller
 		public void _process(){
 			bool toggle = true;
 			int pump = 39;
+			int minPump = 39;
+			int maxPump = 42;
 
 			// Init
-			for (int p = 39; p <= 54; p += 2) {
-				_interface.DigitalWrite(p, HAL.PinValue.LOW);
-				Thread.Sleep(500);
+			for (int p = minPump; p <= maxPump; p += 1) {
+				_interface.DigitalWrite(p, HAL.PinValue.HIGH);
+				//Thread.Sleep(500);
 				_interface.SetPinMode(p, PlantControl.HAL.PinMode.OUTPUT);
-				Thread.Sleep(500);
+				//Thread.Sleep(500);
 			}
 
 			while (_continue) {
@@ -116,9 +118,9 @@ namespace PlantControl.Controller
 						//_interface.AnalogWrite(0, 42);
 					}
 
-					if (true) {
+					if (false) {
 
-						for (int p = 39; p <= 54; p += 2) {
+						for (int p = 39; p <= 54; p += 1) {
 							_interface.DigitalWrite(p, HAL.PinValue.LOW);
 							//_interface.SetPinMode(p, PlantControl.HAL.PinMode.OUTPUT);
 						}
@@ -131,16 +133,12 @@ namespace PlantControl.Controller
 
 					}
 
-					if (false) {
-						for (int p = 39; p <= 54; p += 2) {
-							_interface.DigitalWrite(p, HAL.PinValue.HIGH);
-							_interface.SetPinMode(p, PlantControl.HAL.PinMode.OUTPUT);
-						}
-						pump += 2;
-						if (pump < 39 || pump > 54) pump = 39;
+					if (true) {
+						pump += 1;
+						if (pump < minPump || pump > maxPump) pump = minPump;
+						_interface.DigitalWrite(pump, HAL.PinValue.HIGH);
+						Thread.Sleep(1000);
 						_interface.DigitalWrite(pump, HAL.PinValue.LOW);
-						_interface.SetPinMode(pump, PlantControl.HAL.PinMode.OUTPUT);
-						Thread.Sleep(8000);
 					}
 
 					toggle = !toggle;

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO", "U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.LiteLib", "Unosquare.Labs.LiteLib\Unosquare.Labs.LiteLib.csproj", "{61110638-2D09-4B02-A543-AE32D182C0CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArduinoDriver", "ArduinoDriver\Source\ArduinoDriver\ArduinoDriver.csproj", "{1FE32CD3-938F-40A7-B0A5-75CF0A7254D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -32,5 +34,11 @@ Global
 		{7D7C29B4-9493-4EBD-8F20-6FAC1E7161EE}.Mono|Any CPU.Build.0 = Debug|Any CPU
 		{7D7C29B4-9493-4EBD-8F20-6FAC1E7161EE}.Release|x86.ActiveCfg = Release|Any CPU
 		{7D7C29B4-9493-4EBD-8F20-6FAC1E7161EE}.Release|x86.Build.0 = Release|Any CPU
+		{1FE32CD3-938F-40A7-B0A5-75CF0A7254D7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1FE32CD3-938F-40A7-B0A5-75CF0A7254D7}.Debug|x86.Build.0 = Debug|Any CPU
+		{1FE32CD3-938F-40A7-B0A5-75CF0A7254D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{1FE32CD3-938F-40A7-B0A5-75CF0A7254D7}.Release|x86.Build.0 = Release|Any CPU
+		{1FE32CD3-938F-40A7-B0A5-75CF0A7254D7}.Mono|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FE32CD3-938F-40A7-B0A5-75CF0A7254D7}.Mono|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal
